@@ -12,6 +12,12 @@ package protocol
 
 import "encoding/json"
 
+// created for And
+type And_RegOpt_textDocument_colorPresentation struct {
+	WorkDoneProgressOptions
+	TextDocumentRegistrationOptions
+}
+
 // A special text edit with an additional change annotation.
 //
 // @since 3.16.0.
@@ -1273,7 +1279,7 @@ type CreateFilesParams struct {
 // The declaration of a symbol representation as one or many {@link Location locations}.
 //
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#declaration
-type Declaration = []Location // (alias)
+type Declaration = Or_Declaration // (alias)
 // @since 3.14.0
 //
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#declarationClientCapabilities
@@ -1568,7 +1574,7 @@ type DidChangeConfigurationParams struct {
 
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#didChangeConfigurationRegistrationOptions
 type DidChangeConfigurationRegistrationOptions struct {
-	Section *OrPSection_workspace_didChangeConfiguration `json:"section,omitempty"`
+	Section *Or_DidChangeConfigurationRegistrationOptions_section `json:"section,omitempty"`
 }
 
 // The params sent in a change notebook document notification.
@@ -2687,7 +2693,7 @@ type InlayHint struct {
 	// hint itself is now obsolete.
 	TextEdits []TextEdit `json:"textEdits,omitempty"`
 	// The tooltip text when you hover over this item.
-	Tooltip *OrPTooltip_textDocument_inlayHint `json:"tooltip,omitempty"`
+	Tooltip *Or_InlayHint_tooltip `json:"tooltip,omitempty"`
 	// Render padding before the hint.
 	//
 	// Note: Padding should use the editor's background color, not the
@@ -2735,7 +2741,7 @@ type InlayHintLabelPart struct {
 	// The tooltip text when you hover over this label part. Depending on
 	// the client capability `inlayHint.resolveSupport` clients might resolve
 	// this property late using the resolve request.
-	Tooltip *OrPTooltipPLabel `json:"tooltip,omitempty"`
+	Tooltip *Or_InlayHintLabelPart_tooltip `json:"tooltip,omitempty"`
 	// An optional source code location that represents this
 	// label part.
 	//
@@ -3119,6 +3125,10 @@ type LinkedEditingRanges struct {
 
 // created for Literal (Lit_ClientSemanticTokensRequestOptions_range_Item1)
 type Lit_ClientSemanticTokensRequestOptions_range_Item1 struct {
+}
+
+// created for Literal (Lit_SemanticTokensOptions_range_Item1)
+type Lit_SemanticTokensOptions_range_Item1 struct {
 }
 
 // Represents a location inside a resource, such as a line
@@ -3621,26 +3631,6 @@ type OptionalVersionedTextDocumentIdentifier struct {
 	TextDocumentIdentifier
 }
 
-// created for Or [Location LocationUriOnly]
-type OrPLocation_workspace_symbol struct {
-	Value interface{} `json:"value"`
-}
-
-// created for Or [[]string string]
-type OrPSection_workspace_didChangeConfiguration struct {
-	Value interface{} `json:"value"`
-}
-
-// created for Or [MarkupContent string]
-type OrPTooltipPLabel struct {
-	Value interface{} `json:"value"`
-}
-
-// created for Or [MarkupContent string]
-type OrPTooltip_textDocument_inlayHint struct {
-	Value interface{} `json:"value"`
-}
-
 // created for Or [int32 string]
 type Or_CancelParams_id struct {
 	Value interface{} `json:"value"`
@@ -3672,12 +3662,22 @@ type Or_CompletionItem_textEdit struct {
 }
 
 // created for Or [Location []Location]
+type Or_Declaration struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [Location []Location]
 type Or_Definition struct {
 	Value interface{} `json:"value"`
 }
 
 // created for Or [int32 string]
 type Or_Diagnostic_code struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [[]string string]
+type Or_DidChangeConfigurationRegistrationOptions_section struct {
 	Value interface{} `json:"value"`
 }
 
@@ -3706,8 +3706,18 @@ type Or_Hover_contents struct {
 	Value interface{} `json:"value"`
 }
 
+// created for Or [MarkupContent string]
+type Or_InlayHintLabelPart_tooltip struct {
+	Value interface{} `json:"value"`
+}
+
 // created for Or [[]InlayHintLabelPart string]
 type Or_InlayHint_label struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [MarkupContent string]
+type Or_InlayHint_tooltip struct {
 	Value interface{} `json:"value"`
 }
 
@@ -3718,6 +3728,11 @@ type Or_InlineCompletionItem_insertText struct {
 
 // created for Or [InlineValueEvaluatableExpression InlineValueText InlineValueVariableLookup]
 type Or_InlineValue struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [LSPArray LSPObject bool float64 int32 string uint32]
+type Or_LSPAny struct {
 	Value interface{} `json:"value"`
 }
 
@@ -3751,6 +3766,26 @@ type Or_NotebookDocumentSyncOptions_notebookSelector_Elem struct {
 	Value interface{} `json:"value"`
 }
 
+// created for Or [MarkupContent string]
+type Or_ParameterInformation_documentation struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [Tuple_ParameterInformation_label_Item1 string]
+type Or_ParameterInformation_label struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [PrepareRenameDefaultBehavior PrepareRenamePlaceholder Range]
+type Or_PrepareRenameResult struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [int32 string]
+type Or_ProgressToken struct {
+	Value interface{} `json:"value"`
+}
+
 // created for Or [FullDocumentDiagnosticReport UnchangedDocumentDiagnosticReport]
 type Or_RelatedFullDocumentDiagnosticReport_relatedDocuments_Value struct {
 	Value interface{} `json:"value"`
@@ -3761,8 +3796,38 @@ type Or_RelatedUnchangedDocumentDiagnosticReport_relatedDocuments_Value struct {
 	Value interface{} `json:"value"`
 }
 
+// created for Or [URI WorkspaceFolder]
+type Or_RelativePattern_baseUri struct {
+	Value interface{} `json:"value"`
+}
+
 // created for Or [CodeAction Command]
 type Or_Result_textDocument_codeAction_Item0_Elem struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [CompletionList []CompletionItem]
+type Or_Result_textDocument_completion struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [Declaration []DeclarationLink]
+type Or_Result_textDocument_declaration struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [Definition []DefinitionLink]
+type Or_Result_textDocument_definition struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [[]DocumentSymbol []SymbolInformation]
+type Or_Result_textDocument_documentSymbol struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [Definition []DefinitionLink]
+type Or_Result_textDocument_implementation struct {
 	Value interface{} `json:"value"`
 }
 
@@ -3771,12 +3836,27 @@ type Or_Result_textDocument_inlineCompletion struct {
 	Value interface{} `json:"value"`
 }
 
+// created for Or [SemanticTokens SemanticTokensDelta]
+type Or_Result_textDocument_semanticTokens_full_delta struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [Definition []DefinitionLink]
+type Or_Result_textDocument_typeDefinition struct {
+	Value interface{} `json:"value"`
+}
+
+// created for Or [[]SymbolInformation []WorkspaceSymbol]
+type Or_Result_workspace_symbol struct {
+	Value interface{} `json:"value"`
+}
+
 // created for Or [SemanticTokensFullDelta bool]
 type Or_SemanticTokensOptions_full struct {
 	Value interface{} `json:"value"`
 }
 
-// created for Or [PRangeESemanticTokensOptions bool]
+// created for Or [Lit_SemanticTokensOptions_range_Item1 bool]
 type Or_SemanticTokensOptions_range struct {
 	Value interface{} `json:"value"`
 }
@@ -3921,6 +4001,11 @@ type Or_SignatureInformation_documentation struct {
 	Value interface{} `json:"value"`
 }
 
+// created for Or [TextDocumentContentChangePartial TextDocumentContentChangeWholeDocument]
+type Or_TextDocumentContentChangeEvent struct {
+	Value interface{} `json:"value"`
+}
+
 // created for Or [AnnotatedTextEdit SnippetTextEdit TextEdit]
 type Or_TextDocumentEdit_edits_Elem struct {
 	Value interface{} `json:"value"`
@@ -3946,18 +4031,19 @@ type Or_WorkspaceEdit_documentChanges_Elem struct {
 	Value interface{} `json:"value"`
 }
 
+// created for Or [bool string]
+type Or_WorkspaceFoldersServerCapabilities_changeNotifications struct {
+	Value interface{} `json:"value"`
+}
+
 // created for Or [TextDocumentContentOptions TextDocumentContentRegistrationOptions]
 type Or_WorkspaceOptions_textDocumentContent struct {
 	Value interface{} `json:"value"`
 }
 
-// created for Or [Declaration []DeclarationLink]
-type Or_textDocument_declaration struct {
+// created for Or [Location LocationUriOnly]
+type Or_WorkspaceSymbol_location struct {
 	Value interface{} `json:"value"`
-}
-
-// created for Literal (Lit_SemanticTokensOptions_range_Item1)
-type PRangeESemanticTokensOptions struct {
 }
 
 // The parameters of a configuration request.
@@ -3990,10 +4076,10 @@ type ParameterInformation struct {
 	//
 	// *Note*: a label of type string should be a substring of its containing signature label.
 	// Its intended use case is to highlight the parameter label part in the `SignatureInformation.label`.
-	Label string `json:"label"`
+	Label Or_ParameterInformation_label `json:"label"`
 	// The human-readable doc-comment of this parameter. Will be shown
 	// in the UI but can be omitted.
-	Documentation string `json:"documentation,omitempty"`
+	Documentation *Or_ParameterInformation_documentation `json:"documentation,omitempty"`
 }
 
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#partialResultParams
@@ -4088,7 +4174,7 @@ type PrepareRenamePlaceholder struct {
 }
 
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#prepareRenameResult
-type PrepareRenameResult = PrepareRenamePlaceholder // (alias)
+type PrepareRenameResult = Or_PrepareRenameResult // (alias)
 type PrepareSupportDefaultBehavior uint32
 
 // A previous result id in a workspace pull request.
@@ -4126,7 +4212,7 @@ type ProgressParams struct {
 }
 
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#progressToken
-type ProgressToken = interface{} // (alias)
+type ProgressToken = Or_ProgressToken // (alias)
 // The publish diagnostic client capabilities.
 //
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#publishDiagnosticsClientCapabilities
@@ -4293,7 +4379,7 @@ type RelatedUnchangedDocumentDiagnosticReport struct {
 type RelativePattern struct {
 	// A workspace folder or a base URI to which this pattern will be matched
 	// against relatively.
-	BaseURI DocumentURI `json:"baseUri"`
+	BaseURI Or_RelativePattern_baseUri `json:"baseUri"`
 	// The actual glob pattern;
 	Pattern Pattern `json:"pattern"`
 }
@@ -5251,7 +5337,7 @@ type TextDocumentClientCapabilities struct {
 // it is considered to be the full content of the document.
 //
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocumentContentChangeEvent
-type TextDocumentContentChangeEvent = TextDocumentContentChangePartial // (alias)
+type TextDocumentContentChangeEvent = Or_TextDocumentContentChangeEvent // (alias)
 // @since 3.18.0
 //
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocumentContentChangePartial
@@ -5522,6 +5608,12 @@ type TextEdit struct {
 type TokenFormat string
 type TraceValue string
 
+// created for Tuple
+type Tuple_ParameterInformation_label_Item1 struct {
+	Fld0 uint32 `json:"fld0"`
+	Fld1 uint32 `json:"fld1"`
+}
+
 // Since 3.6.0
 //
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#typeDefinitionClientCapabilities
@@ -5643,12 +5735,6 @@ type TypeHierarchySupertypesParams struct {
 	Item TypeHierarchyItem `json:"item"`
 	WorkDoneProgressParams
 	PartialResultParams
-}
-
-// created for Tuple
-type UIntCommaUInt struct {
-	Fld0 uint32 `json:"fld0"`
-	Fld1 uint32 `json:"fld1"`
 }
 
 // A diagnostic report indicating that the last returned
@@ -5792,12 +5878,6 @@ type WorkDoneProgressOptions struct {
 	WorkDoneProgress bool `json:"workDoneProgress,omitempty"`
 }
 
-// created for And
-type WorkDoneProgressOptionsAndTextDocumentRegistrationOptions struct {
-	WorkDoneProgressOptions
-	TextDocumentRegistrationOptions
-}
-
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#workDoneProgressParams
 type WorkDoneProgressParams struct {
 	// An optional token that a server can use to report work done progress.
@@ -5904,7 +5984,7 @@ type WorkspaceDiagnosticParams struct {
 	Identifier string `json:"identifier,omitempty"`
 	// The currently known diagnostic reports with their
 	// previous result ids.
-	PreviousResultIds []PreviousResultID `json:"previousResultIds"`
+	PreviousResultIds []PreviousResultId `json:"previousResultIds"`
 	WorkDoneProgressParams
 	PartialResultParams
 }
@@ -5949,7 +6029,7 @@ type WorkspaceDocumentDiagnosticReport = Or_WorkspaceDocumentDiagnosticReport //
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#workspaceEdit
 type WorkspaceEdit struct {
 	// Holds changes to existing resources.
-	Changes map[DocumentURI][]TextEdit `json:"changes,omitempty"`
+	Changes map[DocumentUri][]TextEdit `json:"changes,omitempty"`
 	// Depending on the client capability `workspace.workspaceEdit.resourceOperations` document changes
 	// are either an array of `TextDocumentEdit`s to express changes to n different text documents
 	// where each text document edit addresses a specific version of a text document. Or it can contain
@@ -6031,20 +6111,6 @@ type WorkspaceFolder struct {
 	Name string `json:"name"`
 }
 
-// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#workspaceFoldersServerCapabilities
-type WorkspaceFolders5Gn struct {
-	// The server has support for workspace folders
-	Supported bool `json:"supported,omitempty"`
-	// Whether the server wants to receive workspace folder
-	// change notifications.
-	//
-	// If a string is provided the string is treated as an ID
-	// under which the notification is registered on the client
-	// side. The ID can be used to unregister for these events
-	// using the `client/unregisterCapability` request.
-	ChangeNotifications string `json:"changeNotifications,omitempty"`
-}
-
 // The workspace folder change event.
 //
 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#workspaceFoldersChangeEvent
@@ -6078,7 +6144,7 @@ type WorkspaceFoldersServerCapabilities struct {
 	// under which the notification is registered on the client
 	// side. The ID can be used to unregister for these events
 	// using the `client/unregisterCapability` request.
-	ChangeNotifications string `json:"changeNotifications,omitempty"`
+	ChangeNotifications *Or_WorkspaceFoldersServerCapabilities_changeNotifications `json:"changeNotifications,omitempty"`
 }
 
 // A full document diagnostic report for a workspace diagnostic result.
@@ -6104,7 +6170,7 @@ type WorkspaceOptions struct {
 	// The server supports workspace folder.
 	//
 	// @since 3.6.0
-	WorkspaceFolders *WorkspaceFolders5Gn `json:"workspaceFolders,omitempty"`
+	WorkspaceFolders *WorkspaceFoldersServerCapabilities `json:"workspaceFolders,omitempty"`
 	// The server is interested in notifications/requests for operations on files.
 	//
 	// @since 3.16.0
@@ -6129,7 +6195,7 @@ type WorkspaceSymbol struct {
 	// capability `workspace.symbol.resolveSupport`.
 	//
 	// See SymbolInformation#location for more details.
-	Location OrPLocation_workspace_symbol `json:"location"`
+	Location Or_WorkspaceSymbol_location `json:"location"`
 	// A data entry field that is preserved on a workspace symbol between a
 	// workspace symbol request and a workspace symbol resolve request.
 	Data interface{} `json:"data,omitempty"`

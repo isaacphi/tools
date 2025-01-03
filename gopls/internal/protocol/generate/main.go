@@ -166,7 +166,7 @@ func writeprotocol() {
 	hack("ConfigurationParams", "ParamConfiguration")
 	hack("InitializeParams", "ParamInitialize")
 	hack("PreviousResultId", "PreviousResultID")
-	hack("WorkspaceFoldersServerCapabilities", "WorkspaceFolders5Gn")
+	// hack("WorkspaceFoldersServerCapabilities", "WorkspaceFolders5Gn")
 	hack("_InitializeParams", "XInitializeParams")
 
 	for _, k := range types.keys() {

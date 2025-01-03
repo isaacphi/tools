@@ -52,17 +52,17 @@ type Server interface {
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#shutdown
 	Shutdown(context.Context) error
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_codeAction
-	CodeAction(context.Context, *CodeActionParams) ([]CodeAction, error)
+	CodeAction(context.Context, *CodeActionParams) ([]Or_Result_textDocument_codeAction_Item0_Elem, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_codeLens
 	CodeLens(context.Context, *CodeLensParams) ([]CodeLens, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_colorPresentation
 	ColorPresentation(context.Context, *ColorPresentationParams) ([]ColorPresentation, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_completion
-	Completion(context.Context, *CompletionParams) (*CompletionList, error)
+	Completion(context.Context, *CompletionParams) (*Or_Result_textDocument_completion, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_declaration
-	Declaration(context.Context, *DeclarationParams) (*Or_textDocument_declaration, error)
+	Declaration(context.Context, *DeclarationParams) (*Or_Result_textDocument_declaration, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_definition
-	Definition(context.Context, *DefinitionParams) ([]Location, error)
+	Definition(context.Context, *DefinitionParams) (*Or_Result_textDocument_definition, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_diagnostic
 	Diagnostic(context.Context, *DocumentDiagnosticParams) (*DocumentDiagnosticReport, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_didChange
@@ -80,7 +80,7 @@ type Server interface {
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_documentLink
 	DocumentLink(context.Context, *DocumentLinkParams) ([]DocumentLink, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_documentSymbol
-	DocumentSymbol(context.Context, *DocumentSymbolParams) ([]interface{}, error)
+	DocumentSymbol(context.Context, *DocumentSymbolParams) (*Or_Result_textDocument_documentSymbol, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_foldingRange
 	FoldingRange(context.Context, *FoldingRangeParams) ([]FoldingRange, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_formatting
@@ -88,7 +88,7 @@ type Server interface {
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_hover
 	Hover(context.Context, *HoverParams) (*Hover, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_implementation
-	Implementation(context.Context, *ImplementationParams) ([]Location, error)
+	Implementation(context.Context, *ImplementationParams) (*Or_Result_textDocument_implementation, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_inlayHint
 	InlayHint(context.Context, *InlayHintParams) ([]InlayHint, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_inlineCompletion
@@ -120,13 +120,13 @@ type Server interface {
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_semanticTokens_full
 	SemanticTokensFull(context.Context, *SemanticTokensParams) (*SemanticTokens, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_semanticTokens_full_delta
-	SemanticTokensFullDelta(context.Context, *SemanticTokensDeltaParams) (interface{}, error)
+	SemanticTokensFullDelta(context.Context, *SemanticTokensDeltaParams) (*Or_Result_textDocument_semanticTokens_full_delta, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_semanticTokens_range
 	SemanticTokensRange(context.Context, *SemanticTokensRangeParams) (*SemanticTokens, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_signatureHelp
 	SignatureHelp(context.Context, *SignatureHelpParams) (*SignatureHelp, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_typeDefinition
-	TypeDefinition(context.Context, *TypeDefinitionParams) ([]Location, error)
+	TypeDefinition(context.Context, *TypeDefinitionParams) (*Or_Result_textDocument_typeDefinition, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_willSave
 	WillSave(context.Context, *WillSaveTextDocumentParams) error
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_willSaveWaitUntil
@@ -154,7 +154,7 @@ type Server interface {
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#workspace_executeCommand
 	ExecuteCommand(context.Context, *ExecuteCommandParams) (interface{}, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#workspace_symbol
-	Symbol(context.Context, *WorkspaceSymbolParams) ([]SymbolInformation, error)
+	Symbol(context.Context, *WorkspaceSymbolParams) (*Or_Result_workspace_symbol, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#workspace_textDocumentContent
 	TextDocumentContent(context.Context, *TextDocumentContentParams) (*string, error)
 	// See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#workspace_willCreateFiles
@@ -1001,8 +1001,8 @@ func (s *serverDispatcher) DidSaveNotebookDocument(ctx context.Context, params *
 func (s *serverDispatcher) Shutdown(ctx context.Context) error {
 	return s.sender.Call(ctx, "shutdown", nil, nil)
 }
-func (s *serverDispatcher) CodeAction(ctx context.Context, params *CodeActionParams) ([]CodeAction, error) {
-	var result []CodeAction
+func (s *serverDispatcher) CodeAction(ctx context.Context, params *CodeActionParams) ([]Or_Result_textDocument_codeAction_Item0_Elem, error) {
+	var result []Or_Result_textDocument_codeAction_Item0_Elem
 	if err := s.sender.Call(ctx, "textDocument/codeAction", params, &result); err != nil {
 		return nil, err
 	}
@@ -1022,22 +1022,22 @@ func (s *serverDispatcher) ColorPresentation(ctx context.Context, params *ColorP
 	}
 	return result, nil
 }
-func (s *serverDispatcher) Completion(ctx context.Context, params *CompletionParams) (*CompletionList, error) {
-	var result *CompletionList
+func (s *serverDispatcher) Completion(ctx context.Context, params *CompletionParams) (*Or_Result_textDocument_completion, error) {
+	var result *Or_Result_textDocument_completion
 	if err := s.sender.Call(ctx, "textDocument/completion", params, &result); err != nil {
 		return nil, err
 	}
 	return result, nil
 }
-func (s *serverDispatcher) Declaration(ctx context.Context, params *DeclarationParams) (*Or_textDocument_declaration, error) {
-	var result *Or_textDocument_declaration
+func (s *serverDispatcher) Declaration(ctx context.Context, params *DeclarationParams) (*Or_Result_textDocument_declaration, error) {
+	var result *Or_Result_textDocument_declaration
 	if err := s.sender.Call(ctx, "textDocument/declaration", params, &result); err != nil {
 		return nil, err
 	}
 	return result, nil
 }
-func (s *serverDispatcher) Definition(ctx context.Context, params *DefinitionParams) ([]Location, error) {
-	var result []Location
+func (s *serverDispatcher) Definition(ctx context.Context, params *DefinitionParams) (*Or_Result_textDocument_definition, error) {
+	var result *Or_Result_textDocument_definition
 	if err := s.sender.Call(ctx, "textDocument/definition", params, &result); err != nil {
 		return nil, err
 	}
@@ -1083,8 +1083,8 @@ func (s *serverDispatcher) DocumentLink(ctx context.Context, params *DocumentLin
 	}
 	return result, nil
 }
-func (s *serverDispatcher) DocumentSymbol(ctx context.Context, params *DocumentSymbolParams) ([]interface{}, error) {
-	var result []interface{}
+func (s *serverDispatcher) DocumentSymbol(ctx context.Context, params *DocumentSymbolParams) (*Or_Result_textDocument_documentSymbol, error) {
+	var result *Or_Result_textDocument_documentSymbol
 	if err := s.sender.Call(ctx, "textDocument/documentSymbol", params, &result); err != nil {
 		return nil, err
 	}
@@ -1111,8 +1111,8 @@ func (s *serverDispatcher) Hover(ctx context.Context, params *HoverParams) (*Hov
 	}
 	return result, nil
 }
-func (s *serverDispatcher) Implementation(ctx context.Context, params *ImplementationParams) ([]Location, error) {
-	var result []Location
+func (s *serverDispatcher) Implementation(ctx context.Context, params *ImplementationParams) (*Or_Result_textDocument_implementation, error) {
+	var result *Or_Result_textDocument_implementation
 	if err := s.sender.Call(ctx, "textDocument/implementation", params, &result); err != nil {
 		return nil, err
 	}
@@ -1223,8 +1223,8 @@ func (s *serverDispatcher) SemanticTokensFull(ctx context.Context, params *Seman
 	}
 	return result, nil
 }
-func (s *serverDispatcher) SemanticTokensFullDelta(ctx context.Context, params *SemanticTokensDeltaParams) (interface{}, error) {
-	var result interface{}
+func (s *serverDispatcher) SemanticTokensFullDelta(ctx context.Context, params *SemanticTokensDeltaParams) (*Or_Result_textDocument_semanticTokens_full_delta, error) {
+	var result *Or_Result_textDocument_semanticTokens_full_delta
 	if err := s.sender.Call(ctx, "textDocument/semanticTokens/full/delta", params, &result); err != nil {
 		return nil, err
 	}
@@ -1244,8 +1244,8 @@ func (s *serverDispatcher) SignatureHelp(ctx context.Context, params *SignatureH
 	}
 	return result, nil
 }
-func (s *serverDispatcher) TypeDefinition(ctx context.Context, params *TypeDefinitionParams) ([]Location, error) {
-	var result []Location
+func (s *serverDispatcher) TypeDefinition(ctx context.Context, params *TypeDefinitionParams) (*Or_Result_textDocument_typeDefinition, error) {
+	var result *Or_Result_textDocument_typeDefinition
 	if err := s.sender.Call(ctx, "textDocument/typeDefinition", params, &result); err != nil {
 		return nil, err
 	}
@@ -1310,8 +1310,8 @@ func (s *serverDispatcher) ExecuteCommand(ctx context.Context, params *ExecuteCo
 	}
 	return result, nil
 }
-func (s *serverDispatcher) Symbol(ctx context.Context, params *WorkspaceSymbolParams) ([]SymbolInformation, error) {
-	var result []SymbolInformation
+func (s *serverDispatcher) Symbol(ctx context.Context, params *WorkspaceSymbolParams) (*Or_Result_workspace_symbol, error) {
+	var result *Or_Result_workspace_symbol
 	if err := s.sender.Call(ctx, "workspace/symbol", params, &result); err != nil {
 		return nil, err
 	}
